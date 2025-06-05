@@ -1,7 +1,15 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="Strategy AI API", version="1.0.0")
+# Server Configuration
+HOST = "0.0.0.0"
+PORT = int(os.getenv("PORT", "8000"))  # Properly handle Railway's PORT
+
+app = FastAPI(
+    title="Strategy AI Basic Backend",
+    version="1.0.0"
+)
 
 # Configure CORS
 app.add_middleware(
@@ -14,12 +22,12 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"status": "ok", "message": "Strategy AI API is running"}
+    return {"message": "Strategy AI Basic Backend is running!"}
 
 @app.get("/health")
 async def health_check():
-    return {
-        "status": "healthy",
-        "version": "1.0.0",
-        "service": "Strategy AI API"
-    } 
+    return {"status": "healthy"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host=HOST, port=PORT) 
